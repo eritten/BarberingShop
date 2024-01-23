@@ -152,6 +152,7 @@ public class BarberingShop {
     }
 
     private int getLastVipIndex() {
+        // System.out.println(waitingChairs);
         for (int i = waitingChairs.size() - 1; i >= 0; i--) {
             if (waitingChairs.get(i).startsWith("VIP")) {
                 return i;
