@@ -21,7 +21,7 @@ public class Main {
     }
 
     private static void displayWelcomeMessage() {
-        System.out.println("Welcome to this program");
+        System.out.println("Barber Shop Simulator. \n Press space to trigger an event. ");
     }
 
     private static void processRandomClient(BarberingShop shop) {
