@@ -4,7 +4,7 @@ A playful Java program simulating a virtual barber shop. Press space to see what
 
 ## How to Use
 
-1. clone the code from github https:///github.com/eritten.
+1. clone the code from github https:///github.com/eritten/BarberingShop
 2. Open it on your computer.
 3. Press space.
 
