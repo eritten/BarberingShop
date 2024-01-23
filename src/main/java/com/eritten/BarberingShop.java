@@ -144,6 +144,7 @@ public class BarberingShop {
     }
 
     private void displayShopState() {
+        // System.out.println(waitingChairs);
         System.out.println(getEvent());
     }
 
