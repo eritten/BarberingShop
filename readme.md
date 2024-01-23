@@ -14,4 +14,6 @@ A playful Java program simulating a virtual barber shop. Press space to see what
 - Clients sit based on rules.
 - VIPs get special treatment.
 - Watch the action!
-- You can open the demo screen shorts folder to see the program in action.
+action.
+## Demo
+![Screen short](demo.png)
