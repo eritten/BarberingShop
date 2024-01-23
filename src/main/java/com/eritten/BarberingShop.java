@@ -5,10 +5,11 @@ import java.util.Queue;
 
 public class BarberingShop {
     private Queue<String> mainChair = new LinkedList<>();
-    private Queue<String> waitingChairs = new LinkedList<>();
+    private LinkedList<String> waitingChairs = new LinkedList<>();
     private int ordClientCount = 1;
     private int vIPClientCount = 1;
     private final int TOTAL_SEATS = 6;
+    private int trackVipInsertion = 0;
 
     public void clientLeave() {
         try {
@@ -19,6 +20,8 @@ public class BarberingShop {
 
             String leavingClient = mainChair.poll();
             String clientType = leavingClient.startsWith("VIP") ? "VIP" : "ORD";
+            if (clientType.equals("VIP"))
+                trackVipInsertion--;
 
             System.out.println(
                     String.format("%s Client %s is done and is leaving the main chair.", clientType, leavingClient));
@@ -67,7 +70,7 @@ public class BarberingShop {
                 // If the main chair is occupied, and there is space in the waiting area, the
                 // client sits in a waiting chair
                 if (waitingChairs.size() < TOTAL_SEATS - 1) {
-                    waitingChairs.add(client);
+                    waitingChairs.addLast(client);
                     System.out.println(
                             String.format("%s Client %s has joined the queue.", getClientType(client), client));
                 } else {
@@ -89,17 +92,15 @@ public class BarberingShop {
             } else {
                 // If there are VIP clients in the waiting area and there is space, the new VIP
                 // takes a seat after the last VIP
-                if (waitingChairs.stream().anyMatch(c -> c.startsWith("VIP"))
-                        && waitingChairs.size() < TOTAL_SEATS - 1) {
-                    waitingChairs.add(client);
+                int lastVipIndex = getLastVipIndex();
+                if (lastVipIndex != -1 && waitingChairs.size() < TOTAL_SEATS - 1) {
+                    waitingChairs.add(lastVipIndex + 1, client);
                     System.out.println(String.format("VIP Client %s has joined the queue after the last VIP.", client));
                 } else {
                     // VIP takes the first waiting chair, and others shift backward
-                    String firstWaitingChair = waitingChairs.poll();
-                    if (firstWaitingChair != null) {
-                        waitingChairs.add(client);
-                        waitingChairs.add(firstWaitingChair);
-                        System.out.println(String.format("VIP Client %s is seated in the main chair.", client));
+                    if (waitingChairs.size() != 5) {
+                        waitingChairs.addFirst(client);
+                        System.out.println(String.format("VIP Client %s is seated in the first chair.", client));
                     } else {
                         // If there is no space in the waiting area, VIP goes back
                         System.out.println(
@@ -139,16 +140,23 @@ public class BarberingShop {
     }
 
     private String getClientSittingOrder() {
-        // Retrieve the sitting order of clients in the shop
         return String.join(", ", mainChair) + ", " + String.join(", ", waitingChairs);
     }
 
     private void displayShopState() {
-        // Display the current state of the shop in the specified format
         System.out.println(getEvent());
     }
 
     public String getCurrentState() {
         return "Main Chair: " + mainChair + ", Waiting Chairs: " + waitingChairs;
+    }
+
+    private int getLastVipIndex() {
+        for (int i = waitingChairs.size() - 1; i >= 0; i--) {
+            if (waitingChairs.get(i).startsWith("VIP")) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

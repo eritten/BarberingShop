@@ -41,7 +41,6 @@ public class Main {
                 break;
         }
 
-        // Display the event
         System.out.println(shop.getEvent());
     }
 
