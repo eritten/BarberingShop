@@ -9,7 +9,6 @@ public class BarberingShop {
     private int ordClientCount = 1;
     private int vIPClientCount = 1;
     private final int TOTAL_SEATS = 6;
-    private int trackVipInsertion = 0;
 
     public void clientLeave() {
         try {
@@ -21,10 +20,10 @@ public class BarberingShop {
             String leavingClient = mainChair.poll();
             String clientType = leavingClient.startsWith("VIP") ? "VIP" : "ORD";
             if (clientType.equals("VIP"))
-                trackVipInsertion--;
 
-            System.out.println(
-                    String.format("%s Client %s is done and is leaving the main chair.", clientType, leavingClient));
+                System.out.println(
+                        String.format("%s Client %s is done and is leaving the main chair.", clientType,
+                                leavingClient));
 
             shiftClients();
         } catch (Exception e) {
@@ -78,7 +77,7 @@ public class BarberingShop {
                             getClientType(client), client));
                 }
             }
-            displayShopState();
+
         } catch (Exception e) {
             System.err.println("An error occurred in handleClient: " + e.getMessage());
         }
@@ -108,7 +107,7 @@ public class BarberingShop {
                     }
                 }
             }
-            displayShopState();
+
         } catch (Exception e) {
             System.err.println("An error occurred in handleVIPClient: " + e.getMessage());
         }
@@ -120,7 +119,7 @@ public class BarberingShop {
                 String nextClient = waitingChairs.poll();
                 mainChair.add(nextClient);
                 System.out.println(String.format("Client %s has taken the main chair.", nextClient));
-                displayShopState();
+
             }
         } catch (Exception e) {
             System.err.println("An error occurred in shiftClients: " + e.getMessage());
@@ -136,16 +135,7 @@ public class BarberingShop {
     }
 
     public String getEvent() {
-        return String.format("x ---> ( %s ) [ %s ]", getCurrentState(), getClientSittingOrder());
-    }
-
-    private String getClientSittingOrder() {
-        return String.join(", ", mainChair) + ", " + String.join(", ", waitingChairs);
-    }
-
-    private void displayShopState() {
-        // System.out.println(waitingChairs);
-        System.out.println(getEvent());
+        return String.format("x ---> ( %s ) ", getCurrentState());
     }
 
     public String getCurrentState() {
@@ -153,7 +143,6 @@ public class BarberingShop {
     }
 
     private int getLastVipIndex() {
-        // System.out.println(waitingChairs);
         for (int i = waitingChairs.size() - 1; i >= 0; i--) {
             if (waitingChairs.get(i).startsWith("VIP")) {
                 return i;
